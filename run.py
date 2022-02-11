@@ -111,11 +111,13 @@ class craete:
                         target = self.process, \
                         daemon = True, \
                         args = [bigen, end, threadIdx]))
-            else:
+            elif platform.architecture()[1] == 'WindowsPE':
                 self.threadList.append(threading.Thread( \
                         target = self.process, \
                         daemon = True, \
                         args = [bigen, end, threadIdx]))
+            else:
+                sys.exit()
             self.threadList[threadIdx].start()
             print('\r  + 进程 %d / %d 开始' % (threadIdx + 1, self.execOptList.threadCount), end = '')
             bigen = end
@@ -141,7 +143,7 @@ class craete:
                             file.writelines(line)
                 os.remove(self.fileList[threadIdx])
         # 打乱文件行
-        if self.execOptList.needUpsetFiles:
+        if self.execOptList.needShufFiles:
             print('\n\n==================== upseting ====================')
             print('  - 正在打乱文件')
             tmp_file = self.execOptList.filePath + '.' + self.execOptList.rand + '.upset'
@@ -181,13 +183,22 @@ class craete:
 
 if __name__ == '__main__':
     # info
-    print('create_csv_data v0.1.1')
+    print('\ncreate_csv_file v0.1.1\n')
+
+    # os spportition
+    if platform.architecture()[1] == 'ELF':
+        pass
+    elif platform.architecture()[1] == 'WindowsPE':
+        multiprocessing.freeze_support()
+    else:
+        print('不确定这个系统有啥坑, 先不支持\n')
+        sys.exit()
 
     # getopt
     execOptList = func.execOpt()
     execOptList.seed = execOptList.rand
     random.seed(int(execOptList.seed))
-    print('\n当前随机数种子为: %s\n' % execOptList.rand)
+    print('当前随机数种子为: %s\n' % execOptList.rand)
     options, args = getopt.getopt(sys.argv[1:], \
             "hcmj:o:s:S:u", ["help", "use-config", "marge", "cpu=", "output=", "seed=", "separator=", "upset"])
     try:
@@ -204,7 +215,12 @@ if __name__ == '__main__':
         elif name in ("-m", "--marge"):
             execOptList.needMergeFiles = True
         elif name in ("-j", "--cpu"):
-            execOptList.threadCount = int(value)
+            if platform.architecture()[1] == 'ELF':
+                execOptList.threadCount = int(value)
+            elif platform.architecture()[1] == 'WindowsPE':
+                print('Windows系统暂时不支持多核\n')
+                execOptList.threadCount = int(1)
+                multiprocessing.freeze_support()
         elif name in ("-o", "--output"):
             execOptList.filePath = value
         elif name in ("-s", "--seed"):
