@@ -200,10 +200,10 @@ if __name__ == '__main__':
     random.seed(int(execOptList.seed))
     print('当前随机数种子为: %s\n' % execOptList.rand)
     options, args = getopt.getopt(sys.argv[1:], \
-            "hcmj:o:s:S:u", ["help", "use-config", "marge", "cpu=", "output=", "seed=", "separator=", "upset"])
+            "hcmj:o:s:S:u", ["help", "use-config", "marge", "cpu=", "output=", "seed=", "separator=", "shuf"])
     try:
         options, args = getopt.getopt(sys.argv[1:], \
-                "hcmj:o:s:S:u", ["help", "use-config", "marge", "cpu=", "output=", "seed=", "separator=", "upset"])
+                "hcmj:o:s:S:u", ["help", "use-config", "marge", "cpu=", "output=", "seed=", "separator=", "shuf"])
     except getopt.GetoptError:
         sys.exit()
     for name, value in options:
