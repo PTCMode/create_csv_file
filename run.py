@@ -229,7 +229,7 @@ if __name__ == '__main__':
             print('随机数种子设置为: %s\n' % value)
         elif name in ("-S", "--separator"):
             execOptList.separator = value
-        elif name in ("-r", "--shuffle"):
+        elif name in ("-r", "--shuf"):
             execOptList.needMergeFiles = True
             execOptList.needShufFiles = True
         else:
