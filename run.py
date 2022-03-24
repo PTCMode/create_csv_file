@@ -144,7 +144,7 @@ class craete:
                 os.remove(self.fileList[threadIdx])
         # 打乱文件行
         if self.execOptList.needShufFiles:
-            print('\n\n==================== upseting ====================')
+            print('\n\n==================== shuffling ====================')
             print('  - 正在打乱文件')
             tmp_file = self.execOptList.filePath + '.' + self.execOptList.rand + '.upset'
             readCount = 0
@@ -200,10 +200,10 @@ if __name__ == '__main__':
     random.seed(int(execOptList.seed))
     print('当前随机数种子为: %s\n' % execOptList.rand)
     options, args = getopt.getopt(sys.argv[1:], \
-            "hcmj:o:s:S:u", ["help", "use-config", "marge", "cpu=", "output=", "seed=", "separator=", "shuf"])
+            "hcmj:o:s:S:r", ["help", "use-config", "marge", "cpu=", "output=", "seed=", "separator=", "shuf"])
     try:
         options, args = getopt.getopt(sys.argv[1:], \
-                "hcmj:o:s:S:u", ["help", "use-config", "marge", "cpu=", "output=", "seed=", "separator=", "shuf"])
+                "hcmj:o:s:S:r", ["help", "use-config", "marge", "cpu=", "output=", "seed=", "separator=", "shuf"])
     except getopt.GetoptError:
         sys.exit()
     for name, value in options:
