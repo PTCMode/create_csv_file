@@ -7,6 +7,7 @@ import getopt
 import multiprocessing
 import threading
 import platform
+import time
 
 import config
 import func
@@ -44,6 +45,7 @@ class craete:
     def init_by_conf(self):
         print('==================== init_by_conf ====================')
         print('读取 config.py 文件')
+        config.colCount = len(config.colInfoList)
         if (len(config.colInfoList) != config.colCount):
             print('请检查 config.py 文件格式')
             sys.exit()
@@ -97,7 +99,7 @@ class craete:
     # TODO: 有些乱, 按逻辑拆分为几个函数
     def main(self):
         print('\n==================== main ====================')
-        filePath = self.execOptList.filePath + '.' + self.execOptList.rand
+        filePath = self.execOptList.filePath + '.' + str(self.execOptList.rand)
         # 创建进程
         bigen = 0
         end = 0
@@ -143,25 +145,37 @@ class craete:
                             file.writelines(line)
                 os.remove(self.fileList[threadIdx])
         # 打乱文件行
+        # TODO: 优化进度更新逻辑
         if self.execOptList.needShufFiles:
             print('\n\n==================== shuffling ====================')
             print('  - 正在打乱文件')
-            tmp_file = self.execOptList.filePath + '.' + self.execOptList.rand + '.upset'
+            tmp_file = self.execOptList.filePath + '.' + str(self.execOptList.rand) + '.upset'
             readCount = 0
             writeCount = 0
             out = open(tmp_file, mode = 'w', encoding = 'utf-8', newline='\n')
             lines=[]
+            curTime = time.time()
+            preTime = float(0)
             with open(self.execOptList.filePath, mode = 'r', encoding = 'utf-8', newline='\n') as infile:
                 for line in infile:
                     readCount += 1
-                    print('\r    - 读取文件行: %d' % readCount, end = '')
+                    if preTime < curTime + 5:
+                        preTime = curTime
+                        print('\r    - 读取文件: %.2a' % (float(readCount) / self.rowCount), end = '')
                     lines.append(line)
+            print('\r    - 读取文件: 100.00%', end = '')
             random.shuffle(lines)
             print('')
+
+            curTime = time.time()
+            preTime = float(0)
             for line in lines:
                 writeCount += 1
-                print('\r    - 打乱文件行: %d / %d' % (writeCount, readCount), end = '')
+                if preTime < curTime + 5:
+                    preTime = curTime
+                    print('\r    - 写入文件: %.2a' % (float(writeCount) / self.rowCount), end = '')
                 out.write(line)
+            print('\r    - 写入文件: 100.00%', end = '')
             out.close()
             os.remove(self.execOptList.filePath)
             os.rename(tmp_file, self.execOptList.filePath)

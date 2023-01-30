@@ -11,22 +11,22 @@ class execOpt:
     'execOpt'
     def __init__(self):
         # 设置 是否使用config 默认值
-        self.usingConfig = False
+        self.usingConfig = bool(False)
         # 设置 是否合并多线程产生文件 默认值
-        self.needMergeFiles = False
+        self.needMergeFiles = bool(False)
         # 设置 是否打乱文件内的行 默认值
-        self.needShufFiles = False
+        self.needShufFiles = bool(False)
         # 设置 默认线程数量
-        self.threadCount = 1
+        self.threadCount = int(1)
         # 设置 默认文件路径
         if platform.architecture()[1] == 'ELF':
-            self.filePath = './tmp_file'
+            self.filePath = str('./tmp_file')
         else:
-            self.filePath = '.\\tmp_file'
+            self.filePath = str('.\\tmp_file')
         # 设置 默认分隔符
-        self.separator = ';'
+        self.separator = str(';')
         # 生成 随机数 (系统时间基准)
-        self.rand = str(time.time()).split(".")[-1]
+        self.rand = int(str(time.time()).split(".")[-1])
         self.seed = int(-1)
 
     def create_col(self, array):
@@ -136,6 +136,7 @@ class func:
         self.optNumFuncVec.append(tmpFunc)
         pass
 
+    # TODO: 增加自定义字符串逻辑
     def add_option_exlen(self, optDesc:list):
 
         def tmpFunc(val:str):

@@ -1,25 +1,22 @@
 #!/usr/bin/python3
 # TODO: 将配置选项从list改成类对象
 
+def exec_limit(input: int) :
+    if input >= 10:
+        return int(10 ^ 9)
+    elif input <= 1:
+        return int(10)
+    else:
+        return int(10 ^ input)
+
+def exec_exlen(input: int) :
+    return int(input / 4)
+
 # 生成列的数量
 colCount = 4
 
 # 生成行的数量
 rowCount = 50
-
-# CREATE
-#     TABLE
-#         XUWY30.DWD_D_EVT_KF_AL_TOTAL(
-#             AREA_CODE VARCHAR(100) ,
-#             AREA_NAME VARCHAR(1000) ,
-#             AREA_TYPE INT ,
-#             TS_TYPE INT ,
-#             TS_NUM INT ,
-#             TS_CNT INT ,
-#             LAST_AREA_CODE VARCHAR(100) ,
-#             MONTH_ID VARCHAR(10)
-#         )
-# ;
 
 # 自定义文字列数组
 customStrList = [
