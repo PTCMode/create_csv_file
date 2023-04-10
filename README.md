@@ -58,9 +58,9 @@ colInfoList = [
         ['RANDOM', 100],
 
         # 在结果前补空格, 处理后字符串总长度为 设定值(当前为10)
-        # 注: 目前只有 CHAR 或 VARCHAR 会进行此处理
-        # [ 'EXLEN', 字符串长度 ]
-        ['EXLEN', 10]
+        # 注: 目前只有 CHAR、VARCHAR、CUSTOM 会进行此处理
+        # [ 随机长度, 随机字符, "", 长度 ]
+        ['EXLEN', [ True, True, " ABCDEFGHIGKLMNOPQRSTUVWXYZabcdefghigklmnopqrstuvwxyz", 10 ] ]
     ],
     [
         'CUSTOM', customStrList2,
