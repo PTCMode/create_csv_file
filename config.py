@@ -16,7 +16,7 @@ def exec_exlen(input: int) :
 colCount = 4
 
 # 生成行的数量
-rowCount = 50
+rowCount = 50000000
 
 # 自定义文字列数组
 customStrList = [
@@ -57,20 +57,24 @@ customStrList = [
 colInfoList = [
     # [ 数据类型, 设定值, (步长), ([ 特殊处理 ]...) ]
     [
-        'INT', 0, 2,
-        ['LIMIT', 10]
+        'INT', 0,
     ],
     [
         'INT', 0,
-        ['RANDOM', 50000],
+        ['LIMIT', 5000000]
     ],
     [
         'INT', 0,
-        ['RANDOM', 5000000],
+        ['LIMIT', 50]
     ],
     [
-        'INT', 0,
-        ['RANDOM', 500000000],
+        'CUSTOM', customStrList,
+        ['KEY', 31]
+    ],
+    [
+        'VARCHAR', 0,
+        # [ 随机长度, 随机字符, "", 长度 ]
+        ['EXLEN', [ True, True, " ABCDEFGHIGKLMNOPQRSTUVWXYZabcdefghigklmnopqrstuvwxyz", 10 ] ]
     ],
 ]
 

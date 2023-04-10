@@ -76,7 +76,8 @@ class func:
                     continue
                 if array[index][0].upper() == 'LIMIT':
                     print(array[index])
-                    self.optNumFuncVec.append(lambda dividend : dividend % array[index][1])
+                    limit_val = int(array[index][1])
+                    self.optNumFuncVec.append(lambda dividend : dividend % limit_val)
                 elif array[index][0].upper() == 'KEY':
                     print(array[index])
                     self.add_option_key(array[index])
@@ -140,7 +141,19 @@ class func:
     def add_option_exlen(self, optDesc:list):
 
         def tmpFunc(val:str):
-            return val.rjust(optDesc[1], ' ')
+            if type(optDesc[1]) is int:
+                return val.rjust(optDesc[1], ' ')
+            elif type(optDesc[1]) is list:
+                if optDesc[1][0] == True and optDesc[1][1] == True:
+                    return ''.join([random.choice(optDesc[1][2]) for i in range(random.randrange(0, optDesc[1][3] - len(val)))]) + val
+                elif optDesc[1][0] == True and optDesc[1][1] == False:
+                    return val.rjust(random.randrange(0, optDesc[1][3] - len(val)), optDesc[1][2][0])
+                elif optDesc[1][0] == False and optDesc[1][1] == True:
+                    return ''.join([random.choice(optDesc[1][2]) for i in range(optDesc[1][3] - len(val))]) + val
+                else:
+                    return val.rjust(optDesc[1][3], optDesc[1][2][0])
+            else:
+                exit()
 
         self.optStrFuncVec.append(tmpFunc)
         pass
@@ -201,5 +214,8 @@ class custom(func):
         tmp = val * self.step
         for optNumFunc in self.optNumFuncVec:
             tmp = optNumFunc(tmp)
-        return self.val[tmp % len(self.val)]
+        tmp = self.val[tmp % len(self.val)]
+        for optStrFunc in self.optStrFuncVec:
+            tmp = optStrFunc(tmp)
+        return str('\"' + tmp + '\"')
 
